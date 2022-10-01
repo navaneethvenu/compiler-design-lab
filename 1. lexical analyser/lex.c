@@ -6,68 +6,88 @@
 #define MAX 100
 
 char input[MAXINPUT];
-int i = 0;
+int i = -1;
 
 bool isDelimiter(char);
 void checkId();
+bool isValidDelimiter(char);
 void getToken();
 
-int main() {
+int main()
+{
 	FILE *inputFile = fopen("input.txt", "r");
 	fscanf(inputFile, "%[^EOF]s", input);
 	int count = 0;
-	while(i < strlen(input)) {
+	while (i + 1 < strlen(input))
+	{
 		getToken();
 	}
 	return 0;
 }
 
-void getToken() {
-	int j;
-	switch(input[++i]) {
-		case 'i':
-			switch(input[++i]) {
-				case 'f':
-					i++;
-					printf("Valid Keyword: if\n");
-					return;
-				case 'n':
-					if(input[++i] == 't') {
-						printf("Valid Keyword: int\n");
-						return;
-					} else {
-						//checkId();
-					}
-				default:
-					printf(" ");
-					//checkId();
-			}
-			break;
-		case 'm':
-			if(input[++i] == 'a' || input[++i] == 'i' || input[++i] == 'n') {
-				printf("Valid Keyword: main\n");
+void getToken()
+{
+	int j, start = i + 1;
+	// printf("processing %c\n", input[i + 1]);
+	switch (input[++i])
+	{
+	case 'i':
+		switch (input[++i])
+		{
+		case 'f':
+			if (isValidDelimiter(input[i + 1]))
+			{
+				printf("Valid keyword: if\n");
 				return;
-			} else {
-				//checkId();
 			}
-		case '(':
-		case ')':
-		case '{':
-		case '}':
-		case ';':
-			printf("Valid punctuator: %c\n", input[i]);
-			return;
-		case ' ':
-		case '\n':
-		case '\t':
-			i++;
-			break;
+			else
+				checkId();
+		case 'n':
+			if (input[++i] == 't' && isValidDelimiter(input[i + 1]))
+			{
+				printf("Valid keyword: int\n");
+				return;
+			}
+			else
+				checkId();
 		default:
-			i++;
 			checkId();
+		}
+		break;
+	case 'm':
+		if (input[++i] == 'a' && input[++i] == 'i' && input[++i] == 'n' && isValidDelimiter(input[i + 1]))
+		{
+			printf("Valid keyword: main\n");
+			return;
+		}
+		else
+			checkId();
+		break;
+	case '(':
+	case ')':
+	case '{':
+	case '}':
+	case ';':
+		printf("Valid punctuator: %c\n", input[i]);
+		return;
+	case ' ':
+	case '\n':
+	case '\t':
+		break;
+	default:
+		checkId();
 	}
 }
 
-void checkId() {
+void checkId()
+{
 	printf("Identifier: %c\n", input[i]);
+}
+
+bool isValidDelimiter(char ch)
+{
+	return (ch == ' ' || ch == '+' || ch == '-' || ch == '*' ||
+			ch == '/' || ch == ',' || ch == ';' || ch == '>' ||
+			ch == '<' || ch == '=' || ch == '(' || ch == ')' ||
+			ch == '[' || ch == ']' || ch == '{' || ch == '}');
 }

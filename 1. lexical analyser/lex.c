@@ -74,6 +74,24 @@ void getToken()
 			checkId();
 		}
 		return;
+	case 'f':
+		if (input[++i] == 'o' && input[++i] == 'r' && isValidDelimiter(input[i + 1]))
+			printf("Valid keyword: for\n");
+		else
+		{
+			i -= 2;
+			checkId();
+		}
+		return;
+	case 'w':
+		if (input[++i] == 'h' && input[++i] == 'i' && input[++i] == 'l' && input[++i] == 'e' && isValidDelimiter(input[i + 1]))
+			printf("Valid keyword: while\n");
+		else
+		{
+			i -= 4;
+			checkId();
+		}
+		return;
 	case '(':
 	case ')':
 	case '{':

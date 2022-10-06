@@ -1,3 +1,7 @@
 void main() {
-	int ifa = intb+c+++22;
+	int 1ab = intb + c++ + 22;
+	while(c)
+	{
+		ab++;
+	}
 }

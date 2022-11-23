@@ -42,7 +42,6 @@ int main()
 	}
 	for (int i = 0; i < prodNum; i++)
 	{
-		// printf("%c -> %s\n", prod[i].lhs, prod[i].rhs);
 		if (done[prod[i].lhs - 65])
 		{
 			continue;
@@ -57,7 +56,6 @@ int main()
 	}
 	for (int i = 0; i < prodNum; i++)
 	{
-		// printf("%c -> %s\n", prod[i].lhs, prod[i].rhs);
 		if (done[prod[i].lhs - 65])
 		{
 			continue;
@@ -69,7 +67,7 @@ int main()
 	printf("\nEnter input string:\n");
 	scanf("%s", ip);
 	printf("\n");
-	strcat(s, "$");
+	strcat(ip, "$");
 	// predictive parser
 	char stack[MAX];
 	int top = -1;
@@ -77,30 +75,33 @@ int main()
 	stack[++top] = prod[0].lhs;
 	while (top >= 0 && ipPointer < strlen(ip))
 	{
+		// printf("Input: %s, Stack: ", ip + ipPointer);
+		// for (int i = 0; i <= top; i++)
+		// {
+		// 	printf("%c ", stack[i]);
+		// }
+		// printf("\n");
 		char cStack = stack[top--];
 		char cInput = ip[ipPointer];
-		// printf("%d top= %c ip=%c\n", top, cStack, cInput);
 		if (cStack == cInput)
 		{
-			// printf("found %c\n", cInput);
 			ipPointer++;
 			continue;
 		}
 		if (cStack > 'A' && cStack < 'Z')
 		{
+			bool found = false;
+
 			for (int i = 0; i < prodNum; i++)
 			{
 				if (prod[i].lhs != cStack)
 				{
 					continue;
 				}
-				// lhs == top of stack
 				if (prod[i].rhs[0] > 'A' && prod[i].rhs[0] < 'Z')
 				{
 
 					char *first = getFirst(prod[i].rhs[0]);
-					bool found = false;
-					// printf("first of %c: %s\n", prod[i].rhs[0], first);
 					for (int j = 0; j < strlen(first); j++)
 					{
 						if (first[j] == cInput)
@@ -135,7 +136,7 @@ int main()
 					}
 					if (found)
 						break;
-					printf("Error parsing string.\n");
+					printf("\nError parsing string.\n");
 					return 1;
 				}
 				else
@@ -150,22 +151,42 @@ int main()
 						break;
 					}
 				}
+				if (!found && prod[i].rhs[0] == '#')
+				{
+					printf("%c->%s\n", prod[i].lhs, prod[i].rhs);
+				}
 			}
 		}
 		else
 		{
-			printf("Error parsing string.\n");
+			printf("\nError parsing string.\n");
 			return 1;
 		}
 	}
-	if (top != -1)
+	while (top >= 0)
 	{
-		printf("Error parsing string.\n");
+		char cStack = stack[top];
+		bool found = false;
+		for (int i = 0; i < prodNum; i++)
+		{
+			if (cStack == prod[i].lhs && prod[i].rhs[0] == '#')
+			{
+				top--;
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+			break;
+	}
+	if (top != -1 || ip[ipPointer] != '$')
+	{
+		printf("\nError parsing string.\n");
 		return 1;
 	}
 	else
 	{
-		printf("String parsed successfully.\n");
+		printf("\nString parsed successfully.\n");
 	}
 	return 0;
 }

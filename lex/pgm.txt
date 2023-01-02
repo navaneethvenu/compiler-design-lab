@@ -1,0 +1,11 @@
+/*
+void as comment
+*/
+
+#include <stdio.h>
+
+int main() {
+	int n = 1 + 2;
+	printf("hello world\n");
+	return 0;
+}

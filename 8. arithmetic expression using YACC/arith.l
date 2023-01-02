@@ -1,7 +1,7 @@
 // 8. YACC specification to recognise a valid arithmetic expression
 // Amal Joe R S, Roll No. 64, S7 CS2
 
-// arith.y
+// arith.l
 
 %{
 	#include <stdio.h>

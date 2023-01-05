@@ -18,58 +18,75 @@ char dfa[MAX][MAX][MAX];
 char states[MAX][MAX];
 char temp[MAX];
 
-char* goTo(char*, char);
+char *goTo(char *, char);
 int getIndex(char);
-bool found(char*);
+bool found(char *);
 
-int main() {
+int main()
+{
 	printf("Enter the number of input symbols:\n");
 	scanf("%d", &nInput);
 	printf("Enter the input symbols:\n");
-	for (int i = 0; i < nInput; i++) {
+	for (int i = 0; i < nInput; i++)
+	{
 		scanf(" %c", &ip[i]);
 	}
 	printf("Enter the number of states in NFA:\n");
 	scanf("%d", &nNFA);
-	for (int i = 0; i < nNFA; i++) {
+	for (int i = 0; i < nNFA; i++)
+	{
 		printf("Enter the transition table entry for q%d: ", i);
-		for (int j = 0; j < nInput; j++) {
+		for (int j = 0; j < nInput; j++)
+		{
 			scanf("%s", nfa[i][j]);
 		}
 	}
 	printf("\nNFA transition table:\n");
-	for (int i = 0; i < nInput; i++) {
+	for (int i = 0; i < nInput; i++)
+	{
 		printf("\t%c", ip[i]);
 	}
 	printf("\n");
-	for (int i = 0; i < nNFA; i++) {
+	for (int i = 0; i < nNFA; i++)
+	{
 		printf("q%d", i);
-		for (int j = 0; j < nInput; j++) {
+		for (int j = 0; j < nInput; j++)
+		{
 			printf("\t%s", nfa[i][j]);
 		}
 		printf("\n");
 	}
+
 	char pendingStack[MAX][MAX];
 	int pendingTop = -1;
+
 	strcpy(pendingStack[++pendingTop], "0");
-	while(pendingTop >= 0) {
+
+	while (pendingTop >= 0)
+	{
 		strcpy(states[nDFA], pendingStack[pendingTop--]);
-		for (int i = 0; i < nInput; i++) {
+		for (int i = 0; i < nInput; i++)
+		{
 			strcpy(dfa[nDFA][i], goTo(states[nDFA], ip[i]));
-			if(!found(dfa[nDFA][i])) {
-				strcpy(pendingStack[++pendingTop], dfa[nDFA][i]); 
+			if (!found(dfa[nDFA][i]))
+			{
+				strcpy(pendingStack[++pendingTop], dfa[nDFA][i]);
 			}
 		}
 		nDFA++;
 	}
+
 	printf("\nDFA transition table:\n");
-	for (int i = 0; i < nInput; i++) {
+	for (int i = 0; i < nInput; i++)
+	{
 		printf("\t%c", ip[i]);
 	}
 	printf("\n");
-	for (int i = 0; i < nDFA; i++) {
+	for (int i = 0; i < nDFA; i++)
+	{
 		printf("q%s", states[i]);
-		for (int j = 0; j < nInput; j++) {
+		for (int j = 0; j < nInput; j++)
+		{
 			printf("\tq%s", dfa[i][j]);
 		}
 		printf("\n");
@@ -77,31 +94,42 @@ int main() {
 	return 0;
 }
 
-char* goTo(char* state, char sym) {
+char *goTo(char *state, char sym)
+{
 	int symIndex = getIndex(sym);
 	temp[0] = '\0';
-	for (int i = 0; i < strlen(state); i++) {
+	for (int i = 0; i < strlen(state); i++)
+	{
+		// The value of state[i] is a character that represents a state in the NFA,
+		// for example '0' or '1'. Subtracting 48 from this value converts it to
+		// the corresponding integer value, in this case 0 or 1.
 		int stateIndex = state[i] - 48;
-		if(strcmp(nfa[stateIndex][symIndex], "#") == 0) continue;
+
+		if (strcmp(nfa[stateIndex][symIndex], "#") == 0)
+			continue;
 		strcat(temp, nfa[stateIndex][symIndex]);
 	}
 	return temp;
 }
 
 // get index of symbol
-int getIndex(char sym) {
-	for (int i = 0; i < nInput; i++) {
-		if(ip[i] == sym)
+int getIndex(char sym)
+{
+	for (int i = 0; i < nInput; i++)
+	{
+		if (ip[i] == sym)
 			return i;
-	} 
+	}
 	return -1;
 }
 
 // check if a state is found in DFA transition table
-bool found(char* s) {
+bool found(char *s)
+{
 	// here, nDFA is index of last state (not count)
-	for (int i = 0; i <= nDFA; i++) {
-		if(strcmp(states[i], s) == 0)
+	for (int i = 0; i <= nDFA; i++)
+	{
+		if (strcmp(states[i], s) == 0)
 			return true;
 	}
 	return false;
@@ -118,7 +146,7 @@ a b
 
 Output:
 Enter the number of input symbols:
-2        
+2
 Enter the input symbols:
 a
 b

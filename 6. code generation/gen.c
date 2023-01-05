@@ -10,50 +10,64 @@ int regCount = 0;
 
 int getReg(char);
 
-int main() {
+int main()
+{
 	FILE *fp = fopen("input.txt", "r");
-	for (int i = 0; i < MAX; i++) {
+	for (int i = 0; i < MAX; i++)
+	{
 		regs[i] = '\0';
 	}
 	char line[MAX];
-	while(fscanf(fp, "%s", line) != EOF) {
+	while (fscanf(fp, "%s", line) != EOF)
+	{
 		int index = getReg(line[2]);
-		if(regs[index] != line[2]) {
+		if (regs[index] != line[2])
+		{
 			// 1st operand not in register
 			printf("MOV R%d, %c\n", index, line[2]);
 		}
+
 		int index2 = getReg(line[4]);
 		char op2[3];
-		if(regs[index2] == line[4]) {
+		if (regs[index2] == line[4])
+		{
 			// 2nd operand in register
 			sprintf(op2, "R%d", index2);
-		} else {
+		}
+		else
+		{
 			// 2nd +operand not in register
 			sprintf(op2, "%c", line[4]);
 		}
-		//printf("regs: %s\n", regs);
-		switch(line[3]) {
-			case '+':
-				printf("ADD R%d, %s\n", index, op2);
-				break;
-			case '-':
-				printf("SUB R%d, %s\n", index, op2);
-				break;
-			case '*':
-				printf("MUL R%d, %s\n", index, op2);
-				break;
-			case '/':
-				printf("DIV R%d, %s\n", index, op2);
-				break;
+
+		// printf("regs: %s\n", regs);
+		switch (line[3])
+		{
+		case '+':
+			printf("ADD R%d, %s\n", index, op2);
+			break;
+		case '-':
+			printf("SUB R%d, %s\n", index, op2);
+			break;
+		case '*':
+			printf("MUL R%d, %s\n", index, op2);
+			break;
+		case '/':
+			printf("DIV R%d, %s\n", index, op2);
+			break;
 		}
+
 		regs[index] = line[0];
 	}
 	return 0;
 }
 
-int getReg(char ch) {
-	for (int i = 0; i < regCount; i++) {
-		if(regs[i] == ch) {
+int getReg(char ch)
+{
+	for (int i = 0; i < regCount; i++)
+	{
+		if (regs[i] == ch)
+		{
 			return i;
 		}
 	}

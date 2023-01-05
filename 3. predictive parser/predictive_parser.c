@@ -4,14 +4,17 @@
 
 #define MAX 100
 
+// production structure
 struct
 {
-	char rhs[MAX];
-	char lhs;
+	char rhs[MAX]; // rhs of prod
+	char lhs;	   // lhs of prod
 } prod[MAX];
 
 char ip[MAX];
 char s[MAX];
+
+// number of productions (starts at 0)
 int prodNum = 0;
 int tokenNum = 0;
 int table[MAX][MAX];
@@ -25,7 +28,7 @@ char *follow(char);
 int main()
 {
 	FILE *fp = fopen("grammar.txt", "r");
-	char line[MAX];
+	char line[MAX]; // stores each line of file
 	printf("Grammar:\n");
 	while (fscanf(fp, "%s", line) != EOF)
 	{
@@ -35,25 +38,30 @@ int main()
 		prodNum++;
 	}
 	printf("\n");
-	bool done[26];
+
+	bool done[26]; // represents each alphabet
 	for (int i = 0; i < 26; i++)
 	{
 		done[i] = false;
 	}
+
 	for (int i = 0; i < prodNum; i++)
 	{
 		if (done[prod[i].lhs - 65])
 		{
 			continue;
 		}
+
 		done[prod[i].lhs - 65] = true;
 		char *temp = getFirst(prod[i].lhs);
 		printf("first of %c = %s\n", prod[i].lhs, temp);
 	}
+
 	for (int i = 0; i < 26; i++)
 	{
 		done[i] = false;
 	}
+
 	for (int i = 0; i < prodNum; i++)
 	{
 		if (done[prod[i].lhs - 65])
@@ -64,10 +72,12 @@ int main()
 		char *temp = getFollow(prod[i].lhs);
 		printf("follow of %c = %s\n", prod[i].lhs, temp);
 	}
+
 	printf("\nEnter input string:\n");
 	scanf("%s", ip);
 	printf("\n");
 	strcat(ip, "$");
+
 	// predictive parser
 	char stack[MAX];
 	int top = -1;
@@ -75,12 +85,7 @@ int main()
 	stack[++top] = prod[0].lhs;
 	while (top >= 0 && ipPointer < strlen(ip))
 	{
-		// printf("Input: %s, Stack: ", ip + ipPointer);
-		// for (int i = 0; i <= top; i++)
-		// {
-		// 	printf("%c ", stack[i]);
-		// }
-		// printf("\n");
+
 		char cStack = stack[top--];
 		char cInput = ip[ipPointer];
 		if (cStack == cInput)
@@ -195,7 +200,9 @@ char *getFirst(char ch)
 {
 	tokenNum = 0;
 	first(ch);
-	s[tokenNum] = '\0';
+	s[tokenNum] = '\0'; // close s
+
+	// removing duplicates
 	for (int i = 0; i < strlen(s); i++)
 	{
 		for (int j = i + 1; j < strlen(s); j++)
@@ -206,6 +213,7 @@ char *getFirst(char ch)
 			}
 		}
 	}
+
 	for (int i = 0; i < tokenNum; i++)
 	{
 		if (s[i] != ' ')
@@ -218,6 +226,7 @@ char *getFirst(char ch)
 			s[j] = s[j + 1];
 		}
 	}
+
 	return s;
 }
 
@@ -226,6 +235,8 @@ char *getFollow(char ch)
 	tokenNum = 0;
 	follow(ch);
 	s[tokenNum] = '\0';
+
+	// remove duplicates
 	for (int i = 0; i < strlen(s); i++)
 	{
 		for (int j = i + 1; j < strlen(s); j++)
@@ -257,6 +268,7 @@ char *first(char ch)
 	{
 		if (prod[i].lhs == ch)
 		{
+			// This condition checks if the first character of the RHS of the prod is a capital letter.
 			if (prod[i].rhs[0] >= 'A' && prod[i].rhs[0] <= 'Z')
 			{
 				first(prod[i].rhs[0]);
@@ -275,6 +287,7 @@ char *follow(char ch)
 	{
 		s[tokenNum++] = '$';
 	}
+
 	for (int i = 0; i < prodNum; i++)
 	{
 		for (int j = 0; j < strlen(prod[i].rhs); j++)
@@ -286,6 +299,8 @@ char *follow(char ch)
 					if (prod[i].rhs[j] != prod[i].lhs)
 						follow(prod[i].lhs);
 				}
+
+				// check for capital letters (non terminals)
 				else if (prod[i].rhs[j + 1] >= 'A' && prod[i].rhs[j + 1] <= 'Z')
 				{
 					first(prod[i].rhs[j + 1]);

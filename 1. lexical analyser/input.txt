@@ -1,4 +1,4 @@
-void main() {
+void mann() {
 	ig 1ab = intb + c++ + 22;
 	while(c)
 	{

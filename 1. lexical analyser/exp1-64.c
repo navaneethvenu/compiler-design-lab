@@ -65,7 +65,7 @@ void getToken()
 			printf("Valid keyword: main\n");
 		else
 		{
-			i -= 3;
+			i -= 2;
 			checkId();
 		}
 		return;
@@ -158,6 +158,7 @@ void checkId()
 		id[index++] = input[i++];
 	}
 	i--;
+	// printf("%c", input[i]);
 	id[index] = '\0';
 	printf("Valid identifier: %s\n", id);
 }

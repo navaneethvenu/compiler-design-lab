@@ -3,5 +3,6 @@ void mann() {
 	while(c)
 	{
 		ab++;
+		carr();
 	}
 }

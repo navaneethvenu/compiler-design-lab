@@ -157,9 +157,13 @@ void checkId()
 	{
 		id[index++] = input[i++];
 	}
-	i--;
-	// printf("%c", input[i]);
 	id[index] = '\0';
+	if (input[i] == '(')
+	{
+		printf("Function: %s\n", id);
+		return;
+	}
+	i--;
 	printf("Valid identifier: %s\n", id);
 }
 

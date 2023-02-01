@@ -1,5 +1,5 @@
 void main() {
-	int 1ab = intb + c++ + 22;
+	ig 1ab = intb + c++ + 22;
 	while(c)
 	{
 		ab++;

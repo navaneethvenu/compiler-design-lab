@@ -56,6 +56,7 @@ void getToken()
 			}
 			return;
 		default:
+			i--;
 			checkId();
 		}
 		break;

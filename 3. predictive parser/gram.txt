@@ -1,4 +1,3 @@
-S->ABC
-A->Aa|Ad|b
-B->Bb|c
-C->Cc|g
+E->E+T|T
+T->T*F|F
+F->(E)|i

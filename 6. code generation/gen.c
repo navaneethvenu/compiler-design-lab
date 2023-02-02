@@ -20,14 +20,20 @@ int main()
 	char line[MAX];
 	while (fscanf(fp, "%s", line) != EOF)
 	{
+		// printf("\nLine: %s\n", line);
 		int index = getReg(line[2]);
+		// printf("\tIndex: %d", index);
+		// printf("\tRegcount: %d\n\t", regCount);
 		if (regs[index] != line[2])
 		{
 			// 1st operand not in register
 			printf("MOV R%d, %c\n", index, line[2]);
+			regCount++;
 		}
 
 		int index2 = getReg(line[4]);
+		// printf("\tIndex2: %d", index);
+		// printf("\tRegcount: %d\n\t", regCount);
 		char op2[3];
 		if (regs[index2] == line[4])
 		{
@@ -71,7 +77,7 @@ int getReg(char ch)
 			return i;
 		}
 	}
-	return regCount++;
+	return regCount;
 }
 
 /*

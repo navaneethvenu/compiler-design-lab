@@ -1,6 +1,6 @@
 void mann() {
 	ig 1ab = intb + c++ + 22;
-	while(c)
+	while(c>=22)
 	{
 		ab++;
 		carr();
